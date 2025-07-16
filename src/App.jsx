@@ -1,9 +1,17 @@
 import React from 'react'
+import { BrowserRouter ,Routes,Route} from 'react-router-dom'
+import Login from './pages/Login'
 
 const App = () => {
   return (
 <>
-<h1 className='font-bold text-2xl  m-2'>Expense Track App</h1>
+<BrowserRouter>
+<Routes>
+<Route path='/Login'  excat element={<Login/>}/>
+
+
+</Routes>
+</BrowserRouter>
 </>
   )
 }
