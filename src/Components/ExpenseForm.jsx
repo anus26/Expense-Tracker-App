@@ -2,7 +2,13 @@ import React from 'react'
 
 const ExpenseForm = () => {
   return (
-    <div>ExpenseForm</div>
+  <>
+  <section>
+    <div className='expense form '>
+
+    </div>
+  </section>
+  </>
   )
 }
 
