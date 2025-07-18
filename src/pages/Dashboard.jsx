@@ -1,8 +1,12 @@
 import React from 'react'
+import ExpenseForm from '../Components/ExpenseForm'
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+<seciton>
+
+  <ExpenseForm/>
+</seciton>
   )
 }
 
