@@ -2,12 +2,9 @@ import React from 'react'
 import ExpenseForm from '../Components/ExpenseForm'
 
 const Dashboard = () => {
-  return (
-<seciton>
+  return <ExpenseForm/>
 
-  <ExpenseForm/>
-</seciton>
-  )
+  
 }
 
 export default Dashboard
