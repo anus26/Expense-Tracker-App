@@ -1,7 +1,9 @@
-import { doc, setDoc } from 'firebase/firestore'
+import { addDoc, collection, doc,  } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { db } from '../firebase'
 import toast from 'react-hot-toast'
+
+
 
 const ExpenseForm = () => {
   const [subject,setSubject]=useState('')
@@ -13,7 +15,7 @@ const ExpenseForm = () => {
   const handelDataadd=async(e)=>{
        e.preventDefault()
        try {
-        await setDoc(doc(db ,'expense','tracker'),{
+        await addDoc(collection(db ,'expense'),{
           subject,
           Merchant,
           Date,
@@ -26,9 +28,9 @@ const ExpenseForm = () => {
       setMerchant('');
       setDate('');
       setTotal('');
-      setCurrency('USD');
+      setCurrency('currency');
        } catch (error) {
-        console.log(error.messages);
+        console.log(error.message);
         
        }
 
@@ -65,14 +67,14 @@ const ExpenseForm = () => {
 <label  className='block font-medium mb-1' >
   Date*    
 </label>
-   <input type="text" value={Date} onChange={(e)=>setDate(e.target.value)}  className='w-96 h-9 border-2 bg-slate-300 rounded-md focus:ring-2 focus:ring-blue-200 focus:outline-none' />
+   <input type="date" value={Date} onChange={(e)=>setDate(e.target.value)}  className='w-96 h-9 border-2 bg-slate-300 rounded-md focus:ring-2 focus:ring-blue-200 focus:outline-none' />
   </div>
   <div  className='flex items-center justify-center m-3 gap-16'>
 
 <label  className='block font-medium mb-1 '>
   Total*    
 </label>
-  <input type="text" value={Total} onChange={(e)=>setTotal(e.target.value)} className='w-56 h-9 border-2 bg-slate-300 rounded-md focus:ring-2 focus:ring-blue-200 focus:outline-none' />
+  <input type="number" value={Total} onChange={(e)=>setTotal(e.target.value)} className='w-56 h-9 border-2 bg-slate-300 rounded-md focus:ring-2 focus:ring-blue-200 focus:outline-none' />
   <div className=''>
 
 <select onChange={(e)=>setCurrency(e.target.value)} className='w-24 rounded-md  border-2 h-9 bg-slate-300 focus:ring-2 focus:ring-blue-200 focus:outline-none'  >

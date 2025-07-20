@@ -4,7 +4,6 @@ import Login from './pages/Login'
 import Navabar from './Components/Navabar'
 import { Toaster } from 'react-hot-toast'
 import Dashboard from './pages/Dashboard'
-import Logout from './pages/Logout'
 
 const App = () => {
   return (
@@ -21,7 +20,7 @@ const App = () => {
 <Routes>
 <Route path='/Login'  excat element={<Login/>}/>
 <Route path='/dashboard' excat element={<Dashboard/>}/>
- <Route path='/logout' exact element={<Logout/>}/>   
+
 
 
 </Routes>
