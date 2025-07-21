@@ -7,12 +7,15 @@ import { getStyle } from '@coreui/utils'
 import { Link } from 'react-router-dom';
 import ExpenseForm from '../Components/ExpenseForm';
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import ExpenseList from '../Components/ExpenseList';
+
 ChartJS.register(BarElement, CategoryScale, LinearScale);
 
 
 
 const Dashboard = () => {
   const {expenses}=useExpenses()
+  const [showList,setShowList]=useState()
   const [showform,setShowForm]=useState()
   //Monthly Aggregtion
   const monthlyData={}
@@ -59,10 +62,19 @@ const Dashboard = () => {
   return (
   <>
   <div>
-   <button onClick={()=>setShowForm(!showform)} >
- {showform ?<IoIosCloseCircleOutline />:'add expense'}
+    <div className='flex justify-end mr-20 m-5 '>
+
+   <button onClick={()=>setShowForm(!showform)}  className="flex justify-end items-center  text-lg font-medium  w-32 transition-all  duration-300 text rounded-sm ">
+ {showform ?<IoIosCloseCircleOutline className='rounded  text-3xl text-black'/>:'+ add expense'}
    </button>
-    { showform ? (
+    </div>
+     <div className='flex justify-end mr-20 m-5 '>
+
+   <button onClick={()=>setShowList(!showList)}  className="flex justify-end items-center  text-lg font-medium  w-32 transition-all  duration-300 text rounded-sm ">
+ {showList ?<IoIosCloseCircleOutline className='rounded  text-3xl text-black'/>:'+ add List'}
+   </button>
+    </div>
+    { showform ?(
          <div className="flex justify-center mt-8">
           <ExpenseForm />
         </div>):(
@@ -89,9 +101,11 @@ const Dashboard = () => {
    )
 
     }
+    
+    
   </div>
 
-
+<ExpenseList/>
   </>
   )
 }
