@@ -1,4 +1,4 @@
-import { collection, getDoc, onSnapshot } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import {  Children, createContext, useContext, useDebugValue, useEffect, useState } from "react";
 import { db } from "../firebase";
 
@@ -23,17 +23,31 @@ export const ExpenseProvider=({children})=>{
       
     },[])
 
-        useEffect(()=>{
-        const unsubscribe=onSnapshot(collection(db,'update'),(snapshot)=>{
-            const expenseData=snapshot.docChanges().forEach((doc)=>({
-                id:doc.id,
-                ...doc.data(),
-            }))
-        setUpDated(expenseData)
-        })
-        return ()=>unsubscribe()  //cleanup
-      
-    },[])
+const updateExpense = async (id, updatedData) => {
+  try {
+    const expenseRef = doc(db, 'expense', id);
+    await updateDoc(expenseRef, updatedData);
+    console.log("✅ Expense updated");
+  } catch (error) {
+    console.error("❌ Error updating expense:", error.message);
+  }
+};
+
+
+  
+
+
+const deleteExpense=async(id)=>{
+    try {
+        const expenseRef=doc(db,'expense',id)
+        await deleteDoc(expenseRef)
+        console.log( 'Expens Delete');
+        
+    } catch (error) {
+        console.error('error updating ',error.message);
+        
+    }
+}
 //    useEffect(()=>{
 //     const unsubscribe=onSnapshot(collection(db,'getexpense'),(snapshot)=>{
 //         const expense=snapshot.docs.map(doc=>({
@@ -50,7 +64,7 @@ export const ExpenseProvider=({children})=>{
 
 
     return(
-        <Expenses.Provider value={{expenses,updated}} >
+        <Expenses.Provider value={{expenses,updateExpense,deleteExpense}} >
                 {children}
         </Expenses.Provider>
     )

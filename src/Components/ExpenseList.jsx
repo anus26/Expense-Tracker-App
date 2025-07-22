@@ -1,112 +1,130 @@
-import React, { useState } from 'react';
-import { useExpenses } from '../Context/Expenses';
-import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase'; // Make sure this path is correct
+import React, { useState, useRef } from 'react'
+import { useExpenses } from '../Context/Expenses'
 
 const ExpenseList = () => {
-  const { expenses } = useExpenses();
-  const [editId, setEditId] = useState(null);
+  const { expenses, updateExpense, deleteExpense } = useExpenses();
+
   const [subject, setSubject] = useState('');
-  const [merchant, setMerchant] = useState('');
-  const [date, setDate] = useState('');
-  const [total, setTotal] = useState('');
+  const [Merchant, setMerchant] = useState('');
+  const [Date, setDate] = useState('');
+  const [Total, setTotal] = useState('');
   const [currency, setCurrency] = useState('');
+  const [openId, setOpenId] = useState(null);
+
+  const modalRef = useRef();
 
   const handleEditClick = (item) => {
-    setEditId(item.id);
-    setSubject(item.subject || '');
-    setMerchant(item.Merchant || '');
-    setDate(item.Date || '');
-    setTotal(item.Total || '');
-    setCurrency(item.currency || '');
+    setSubject(item.subject);
+    setMerchant(item.Merchant);
+    setDate(item.Date);
+    setTotal(item.Total);
+    setCurrency(item.currency);
+    setOpenId(item.id);
+    modalRef.current.showModal(); // Show the modal
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!editId) return;
-
     try {
-      const docRef = doc(db, 'expense', editId);
-      await updateDoc(docRef, {
+      await updateExpense(openId, {
         subject,
-        Merchant: merchant,
-        Date: date,
-        Total: total,
+        Merchant,
+        Date,
+        Total,
         currency,
       });
 
-      // Clear after update
-      setEditId(null);
+      // Reset state
       setSubject('');
       setMerchant('');
       setDate('');
       setTotal('');
       setCurrency('');
+      setOpenId(null);
+      modalRef.current.close(); // Close modal after save
     } catch (error) {
-      console.error('Update error:', error.message);
+      console.log(error.message);
+    }
+  };
+
+  const handleDeleteClick = async (id) => {
+    try {
+      await deleteExpense(id);
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
   return (
-    <div className='expenses-list'>
-      <h1>Expenses List</h1>
-      <table className='table-auto border w-full'>
-        <thead>
-          <tr className='bg-gray-200 text-left'>
-            <th className='px-4 py-2'>Subject</th>
-            <th className='px-4 py-2'>Merchant</th>
-            <th className='px-4 py-2'>Date</th>
-            <th className='px-4 py-2'>Total</th>
-            <th className='px-4 py-2'>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.isArray(expenses) && expenses.length > 0 ? (
-            expenses.map((item) => (
-              <React.Fragment key={item.id}>
-                <tr className='border-t'>
+    <>
+      <div className='expenses list'>
+        <h1 className="text-2xl font-bold mb-4">Expenses List</h1>
+        <table className='table table-zebra w-full'>
+          <thead>
+            <tr className='bg-gray-200 text-left'>
+              <th className='px-4 py-2'>Subject</th>
+              <th className='px-4 py-2'>Merchant</th>
+              <th className='px-4 py-2'>Date</th>
+              <th className='px-4 py-2'>Total</th>
+              <th className='px-4 py-2'>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Array.isArray(expenses) && expenses.length > 0 ? (
+              expenses.map((item) => (
+                <tr key={item.id} className='border-t'>
                   <td className='px-4 py-2'>{item.subject}</td>
                   <td className='px-4 py-2'>{item.Merchant}</td>
                   <td className='px-4 py-2'>{item.Date}</td>
                   <td className='px-4 py-2'>{item.Total}</td>
-                  <td className='px-4 py-2'>
-                    <button
-                      className='bg-blue-500 text-white px-2 py-1 rounded'
-                      onClick={() => handleEditClick(item)}
-                    >
+                  <td className='px-4 py-2 flex gap-2'>
+                    <button className="btn btn-sm btn-info" onClick={() => handleEditClick(item)}>
                       Update
+                    </button>
+                    <button className="btn btn-sm btn-error" onClick={() => handleDeleteClick(item.id)}>
+                      Delete
                     </button>
                   </td>
                 </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className='text-center py-4'>
+                  No expense data found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
 
-                {editId === item.id && (
-                  <tr>
-                    <td colSpan={5}>
-                      <form onSubmit={handleSubmit} className='p-4 flex flex-col gap-2'>
-                        <input type='text' placeholder='Subject' value={subject} onChange={(e) => setSubject(e.target.value)} />
-                        <input type='text' placeholder='Merchant' value={merchant} onChange={(e) => setMerchant(e.target.value)} />
-                        <input type='text' placeholder='Date' value={date} onChange={(e) => setDate(e.target.value)} />
-                        <input type='text' placeholder='Total' value={total} onChange={(e) => setTotal(e.target.value)} />
-                        <input type='text' placeholder='Currency' value={currency} onChange={(e) => setCurrency(e.target.value)} />
-                        <button type='submit' className='bg-green-600 text-white px-3 py-1 rounded'>Submit</button>
-                      </form>
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={5} className='text-center py-4'>
-                No expense data found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+      {/* DaisyUI Modal */}
+      <dialog id="edit_modal" className="modal" ref={modalRef}>
+        <div className="modal-box">
+          <form onSubmit={handleSubmit} method="dialog" className="space-y-3">
+            <button type="button" className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => modalRef.current.close()}>
+              ✕
+            </button>
+
+            <h3 className="font-bold text-lg">Edit Expense</h3>
+            <input type="text" placeholder="Subject" className="input input-bordered w-full"
+              value={subject} onChange={(e) => setSubject(e.target.value)} />
+            <input type="text" placeholder="Merchant" className="input input-bordered w-full"
+              value={Merchant} onChange={(e) => setMerchant(e.target.value)} />
+            <input type="text" placeholder="Date" className="input input-bordered w-full"
+              value={Date} onChange={(e) => setDate(e.target.value)} />
+            <input type="text" placeholder="Total" className="input input-bordered w-full"
+              value={Total} onChange={(e) => setTotal(e.target.value)} />
+            <input type="text" placeholder="Currency" className="input input-bordered w-full"
+              value={currency} onChange={(e) => setCurrency(e.target.value)} />
+            <button type="submit" className="btn btn-primary w-full">Save Changes</button>
+          </form>
+        </div>
+      </dialog>
+    </>
   );
 };
 
 export default ExpenseList;
+
 
