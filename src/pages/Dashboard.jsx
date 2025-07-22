@@ -17,6 +17,19 @@ const Dashboard = () => {
   const {expenses}=useExpenses()
   const [showList,setShowList]=useState()
   const [showform,setShowForm]=useState()
+
+
+
+  const handleFormToggle = () => {
+  setShowForm(!showform);
+  setShowList(false); // list ko hide karo
+};
+
+const handleListToggle = () => {
+  setShowList(!showList);
+  setShowForm(false); // form ko hide karo
+};
+
   //Monthly Aggregtion
   const monthlyData={}
   expenses.forEach((exp)=>{
@@ -64,21 +77,29 @@ const Dashboard = () => {
   <div>
     <div className='flex justify-end mr-20 m-5 '>
 
-   <button onClick={()=>setShowForm(!showform)}  className="flex justify-end items-center  text-lg font-medium  w-32 transition-all  duration-300 text rounded-sm ">
+   <button onClick={handleFormToggle}  className="flex justify-end items-center  text-lg font-medium  w-32 transition-all  duration-300 text rounded-sm ">
  {showform ?<IoIosCloseCircleOutline className='rounded  text-3xl text-black'/>:'+ add expense'}
    </button>
     </div>
      <div className='flex justify-end mr-20 m-5 '>
 
-   <button onClick={()=>setShowList(!showList)}  className="flex justify-end items-center  text-lg font-medium  w-32 transition-all  duration-300 text rounded-sm ">
- {showList ?<IoIosCloseCircleOutline className='rounded  text-3xl text-black'/>:'+ add List'}
-   </button>
-    </div>
-    { showform ?(
-         <div className="flex justify-center mt-8">
-          <ExpenseForm />
-        </div>):(
-<div className=' m-24 flex  gap-10 items-center justify-center border border-r-gray-600 bg-green-200 rounded-lg border-none'>
+       <button onClick={handleListToggle}  className="flex justify-end items-center  text-lg font-medium  w-32 transition-all  duration-300 text rounded-sm ">
+     {showList ?<IoIosCloseCircleOutline className='rounded  text-3xl text-black'/>:'Expense List'}
+       </button>
+        </div>
+    { showform  &&(
+      <div className="flex justify-center mt-8">
+          <ExpenseForm /> 
+        </div>
+    )}
+      { showList  &&(
+      <div className="flex justify-center mt-8">
+          <ExpenseList /> 
+        </div>
+    )}
+
+  
+      { !showform && !showList && (<div className=' m-24 flex  gap-10 items-center justify-center border border-r-gray-600 bg-green-200 rounded-lg border-none'>
  
   <div>
 
@@ -99,15 +120,18 @@ const Dashboard = () => {
   </div>
 </div>
    )
+  }
+  
 
-    }
+
+    
     
     
   </div>
 
-<ExpenseList/>
-  </>
-  )
-}
 
-export default Dashboard
+  </>
+  ) 
+
+}
+export default Dashboard;
