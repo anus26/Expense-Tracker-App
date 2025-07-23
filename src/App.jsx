@@ -9,8 +9,13 @@ const App = () => {
   return (
 <>
 <BrowserRouter>
-<div className='flex  h-screen'>
-<div className=" w-64 h-full p-4 bg-green-600 border-2 text-white  ">
+<div className='flex  flex-col md:flex-row h-screen  '>
+  <div className="block md:hidden w-full bg-green-600 text-white p-4">
+    <Navabar />
+  </div>
+
+  {/* 💻 Desktop Navbar (Sidebar) */}
+  <div className="hidden md:block w-64 h-full p-4 bg-green-600 text-white">
     <Navabar />
   </div>
 

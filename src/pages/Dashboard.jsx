@@ -75,7 +75,7 @@ const handleListToggle = () => {
   return (
   <>
   <div>
-    <div className='flex justify-end mr-20 m-5 '>
+    <div className='flex justify-end mr-20 m-5  '>
 
    <button onClick={handleFormToggle}  className="flex justify-end items-center  text-lg font-medium  w-32 transition-all  duration-300 text rounded-sm ">
  {showform ?<IoIosCloseCircleOutline className='rounded  text-3xl text-black'/>:'+ add expense'}
@@ -99,14 +99,14 @@ const handleListToggle = () => {
     )}
 
   
-      { !showform && !showList && (<div className=' m-24 flex  gap-10 items-center justify-center border border-r-gray-600 bg-green-200 rounded-lg border-none'>
+      { !showform && !showList && (<div className=' m-24 flex flex-wrap    gap-10 items-center justify-center border border-r-gray-600 bg-green-200 rounded-lg border-none'>
  
   <div>
 
 
    <h2 className='text-xl font-bold mb-4  '>📅 Monthly Expenses</h2>
 
-  <div className='w-96 h-96'>
+  <div className='w-96 h-96  sm:w-96 sm:h-96 '>
       <Bar data={monthlyChartData}   />
   </div>
   </div>
@@ -114,7 +114,7 @@ const handleListToggle = () => {
 <div>
 
   <h2 className='text-xl font-bold mb-4'>📅 Daily Expenses</h2>
-  <div className='w-96 h-96'>
+  <div className='w-96 h-96 sm:w-96 sm:h-96  '>
       <Bar data={DailyChartData}   />
 </div>
   </div>
