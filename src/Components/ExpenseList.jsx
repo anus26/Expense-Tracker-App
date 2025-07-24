@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react'
 import { useExpenses } from '../Context/Expenses'
 import { FiFilter } from "react-icons/fi";
+import { MdOutlineSystemSecurityUpdate } from "react-icons/md";
+import { FaDeleteLeft } from "react-icons/fa6";
+
 const ExpenseList = () => {
   const { expenses, updateExpense, deleteExpense,filterExpensesBySubject} = useExpenses();
 
@@ -82,8 +85,8 @@ const handlefilter = async (e) => {
   return (
     <>
       <div className='expenses list'>
-        <h1 className="text-2xl font-bold mb-4">Expenses List</h1>
-<div className='filter relative flex items-end justify-end font-semibold text-2xl m-2 scroll-m-3  '>
+        <h1 className="text-2xl font-bold mb-4 sm:text-center xs:text-center">Expenses List</h1>
+<div className='filter relative flex items-end justify-end font-semibold text-2xl m-2 scroll-m-3   '>
   <button className='hover:bg-slate-100 rounded-full drop-shadow-xl p-2 shadow-md  scroll-smooth '>
         <FiFilter onClick={()=>setOpenFilter(!openFilter)}   />
 
@@ -106,7 +109,9 @@ const handlefilter = async (e) => {
 
 
 </div>
-        <table className='table table-zebra w-full'>
+<div className='overflow-x-auto snap-x snap-mandatory'>
+
+        <table className='table-auto  md:table-fixed table-zebra w-full '>
           
           <thead>
             <tr className='bg-gray-200 text-left'>
@@ -120,18 +125,20 @@ const handlefilter = async (e) => {
           <tbody>
             {Array.isArray(expenses) && expenses.length > 0 ? (
               expenses.map((item) => (
-                <tr key={item.id} className='border-t'>
-                  <td className='px-4 py-2'>{item.subject}</td>
-                  <td className='px-4 py-2'>{item.Merchant}</td>
-                  <td className='px-4 py-2'>{item.Date}</td>
-                  <td className='px-4 py-2'>{item.Total}</td>
+                <tr key={item.id} className='border-t snap-start '>
+                  <td className='px-4 py-2 '>{item.subject}</td>
+                  <td className='px-4 py-2 '>{item.Merchant}</td>
+                  <td className='px-4 py-2  '>{item.Date}</td>
+                  <td className='px-4 py-2 '>{item.Total}</td>
                   <td className='px-4 py-2 flex gap-2'>
-                    <button className="btn btn-sm btn-info" onClick={() => handleEditClick(item)}>
+                    <button className="btn btn-sm btn-info sm:hidden md:block xs:hidden" onClick={() => handleEditClick(item)}>
                       Update
                     </button>
-                    <button className="btn btn-sm btn-error" onClick={() => handleDeleteClick(item.id)}>
+                      < MdOutlineSystemSecurityUpdate onClick={() => handleEditClick(item)} className='md:hidden'/>
+                    <button className="btn btn-sm btn-error sm:hidden md:block xs:hidden" onClick={() => handleDeleteClick(item.id)}>
                       Delete
                     </button>
+                    <FaDeleteLeft  onClick={() => handleDeleteClick(item.id)} className='md:hidden'/>
                   </td>
                 </tr>
               ))
@@ -169,6 +176,7 @@ const handlefilter = async (e) => {
           </form>
         </div>
       </dialog>
+              </div>
     </>
   );
 };

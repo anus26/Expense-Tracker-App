@@ -99,22 +99,21 @@ const handleListToggle = () => {
     )}
 
   
-      { !showform && !showList && (<div className=' m-24 flex flex-wrap    gap-10 items-center justify-center border border-r-gray-600 bg-green-200 rounded-lg border-none'>
+      { !showform && !showList && (<div className=' m-4 sm:m-6 xs:m-2  md:m-10 flex flex-wrap    gap-10 items-center justify-center border border-r-gray-600 bg-green-200  rounded-lg border-none'>
  
   <div>
 
 
    <h2 className='text-xl font-bold mb-4  '>📅 Monthly Expenses</h2>
-
-  <div className='w-96 h-96  sm:w-96 sm:h-96 '>
+<div className='w-96 sm:w-72 xs:w-60 sm:h-96 h-96 '>
       <Bar data={monthlyChartData}   />
   </div>
   </div>
-
+ 
 <div>
 
   <h2 className='text-xl font-bold mb-4'>📅 Daily Expenses</h2>
-  <div className='w-96 h-96 sm:w-96 sm:h-96  '>
+<div className='w-96 sm:w-72 xs:w-60 sm:h-96 h-96'>
       <Bar data={DailyChartData}   />
 </div>
   </div>
