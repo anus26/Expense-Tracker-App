@@ -26,24 +26,24 @@ export const ExpenseProvider=({children})=>{
 
     
 
+
 const filterExpensesBySubject = async (subject) => {
-        console.log("Querying for subject:", subject);
+
   try {
-    const q = query(collection(db, "expense"), where("subject", "==", subject));
+    const q = query(collection(db, 'expense'), where('subject', '==', subject));
     const snapshot = await getDocs(q);
-
-    const filtered = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-console.log(filtered);
-
-    return filtered; // ✅ Make sure you return this
+    const filtered = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setExpenses(filtered)
+    console.log("✅ Filtered Data:",filtered);
+    
+   return filtered; 
+  
   } catch (error) {
     console.error("❌ Error fetching filtered expenses:", error.message);
-    return []; // Return empty array if error
+return[]
   }
 };
+
 
 const updateExpense = async (id, updatedData) => {
   try {

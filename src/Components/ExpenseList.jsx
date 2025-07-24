@@ -5,7 +5,7 @@ import { MdOutlineSystemSecurityUpdate } from "react-icons/md";
 import { FaDeleteLeft } from "react-icons/fa6";
 
 const ExpenseList = () => {
-  const { expenses, updateExpense, deleteExpense,filterExpensesBySubject} = useExpenses();
+  const { expenses, setExpenses,updateExpense, deleteExpense,filterExpensesBySubject} = useExpenses();
 
   const [subject, setSubject] = useState('');
   const [Merchant, setMerchant] = useState('');
@@ -65,19 +65,15 @@ const ExpenseList = () => {
 const handlefilter = async (e) => {
   e.preventDefault();
 
-  if (isSubjectChecked && subject.trim() === '') {
-    alert("Please enter a subject to filter.");
-    return;
-  }
 
-  if (isSubjectChecked) {
-    const filteredData = await filterExpensesBySubject(subject);
-    console.log('filtered', filteredData);
-    setExpenses(filteredData); // update the UI
-  }
+    const  filtered= await filterExpensesBySubject(subject);
+    console.log('filtered', filtered);
+   
+  
+  
 
-  setOpenFilter(false);
-  setFilter(false);
+setIsSubjectChecked(false)
+setSubject('')
 };
 
   
@@ -92,29 +88,41 @@ const handlefilter = async (e) => {
 
   </button>
  { openFilter && ( 
-  <form onSubmit={handlefilter} className='absolute z-10 flex flex-col top-16 right-0 border-2 rounded-md shadow-lg space-y-4 w-48 bg-white gap-2'>
-    <label className='flex flex-col text-sm m-2'>
-      Subject:
-      <input 
-        type="text" 
-        placeholder="Enter subject"
-        value={subject} 
-        onChange={(e) => setSubject(e.target.value)}
-        className="input input-bordered"
-      />
-    </label>
-    <button type="submit" className="btn btn-sm btn-primary w-full mt-2">Submit</button>
-  </form>
+<form onSubmit={handlefilter} className='absolute z-10 flex flex-col top-16 right-0 border-2 rounded-md shadow-lg space-y-4 w-48 bg-white gap-2'>
+  
+  <label className='flex items-center gap-2 text-sm m-2'>
+    <input 
+      type="checkbox" 
+      checked={isSubjectChecked}
+      onChange={() => setIsSubjectChecked(!isSubjectChecked)}
+    />
+    Enable Subject Filter
+  </label>
+
+  <label className='flex flex-col text-sm m-2'>
+    Subject:
+    <input 
+      type="text" 
+      placeholder="Enter subject"
+      value={subject}
+      onChange={(e) => setSubject(e.target.value)}
+      className="input input-bordered"
+    />
+  </label>
+
+  <button type="submit" className="btn btn-sm btn-primary w-full mt-2">Filter</button>
+</form>
+
 )}
 
 
 </div>
-<div className='overflow-x-auto snap-x snap-mandatory'>
+<div className='overflow-x-auto sm:snap-x sm:snap-mandatory'>
 
-        <table className='table-auto  md:table-fixed table-zebra w-full '>
+        <table className='table-auto  border-collapse table-zebra w-full  sm:w-20 xs:w-10 '>
           
           <thead>
-            <tr className='bg-gray-200 text-left'>
+            <tr className='bg-gray-200 text-left flex-row-1'>
               <th className='px-4 py-2'>Subject</th>
               <th className='px-4 py-2'>Merchant</th>
               <th className='px-4 py-2'>Date</th>
@@ -125,7 +133,7 @@ const handlefilter = async (e) => {
           <tbody>
             {Array.isArray(expenses) && expenses.length > 0 ? (
               expenses.map((item) => (
-                <tr key={item.id} className='border-t snap-start '>
+                <tr key={item.id} className='border-t sm:snap-start  '>
                   <td className='px-4 py-2 '>{item.subject}</td>
                   <td className='px-4 py-2 '>{item.Merchant}</td>
                   <td className='px-4 py-2  '>{item.Date}</td>
@@ -134,11 +142,11 @@ const handlefilter = async (e) => {
                     <button className="btn btn-sm btn-info sm:hidden md:block xs:hidden" onClick={() => handleEditClick(item)}>
                       Update
                     </button>
-                      < MdOutlineSystemSecurityUpdate onClick={() => handleEditClick(item)} className='md:hidden'/>
+                      < MdOutlineSystemSecurityUpdate onClick={() => handleEditClick(item)} className='md:hidden text-blue-500'/>
                     <button className="btn btn-sm btn-error sm:hidden md:block xs:hidden" onClick={() => handleDeleteClick(item.id)}>
                       Delete
                     </button>
-                    <FaDeleteLeft  onClick={() => handleDeleteClick(item.id)} className='md:hidden'/>
+                    <FaDeleteLeft  onClick={() => handleDeleteClick(item.id)} className='md:hidden text-red-500'/>
                   </td>
                 </tr>
               ))
