@@ -3,6 +3,7 @@ import { useExpenses } from '../Context/Expenses'
 import { FiFilter } from "react-icons/fi";
 import { MdOutlineSystemSecurityUpdate } from "react-icons/md";
 import { FaDeleteLeft } from "react-icons/fa6";
+import toast from 'react-hot-toast';
 
 const ExpenseList = () => {
   const { expenses, setExpenses,updateExpense, deleteExpense,filterExpensesBySubject} = useExpenses();
@@ -69,7 +70,7 @@ const handlefilter = async (e) => {
     const  filtered= await filterExpensesBySubject(subject);
     console.log('filtered', filtered);
    
-  
+     toast.success('Successfully filtered')
   
 
 setIsSubjectChecked(false)
