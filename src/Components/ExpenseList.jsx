@@ -12,6 +12,8 @@ const ExpenseList = () => {
   const [openId, setOpenId] = useState(null);
   const [openFilter,setOpenFilter]=useState('')
   const [filter,setFilter]=useState('')
+  const [isSubjectChecked, setIsSubjectChecked] = useState(false);
+
   const modalRef = useRef();
 
   const handleEditClick = (item) => {
@@ -57,13 +59,24 @@ const ExpenseList = () => {
       console.log(error.message);
     }
   };
-  const handlefilter=async(e)=>{
-  e.preventDefault()
-  await filterExpensesBySubject()
-    
-    setOpenFilter(false);
-    setFilter(false)
+const handlefilter = async (e) => {
+  e.preventDefault();
+
+  if (isSubjectChecked && subject.trim() === '') {
+    alert("Please enter a subject to filter.");
+    return;
   }
+
+  if (isSubjectChecked) {
+    const filteredData = await filterExpensesBySubject(subject);
+    console.log('filtered', filteredData);
+    setExpenses(filteredData); // update the UI
+  }
+
+  setOpenFilter(false);
+  setFilter(false);
+};
+
   
 
   return (
@@ -75,23 +88,22 @@ const ExpenseList = () => {
         <FiFilter onClick={()=>setOpenFilter(!openFilter)}   />
 
   </button>
-  { openFilter && ( 
-    
-    
-      
-
-            <form  onSubmit={handlefilter}   className='absolute    z-10 flex flex-col top-16 right-0 border-2 rounded-md shadow-lg space-y-4 w-48 bg-white gap-2  '>
-            <label className='flex items-center gap-2 text-sm m-2'>
-            <input type="checkbox"   />Subject
-          </label>
-          <label className='flex items-center gap-2 text-sm m-2'>
-           <input type="checkbox"     />Merchant
+ { openFilter && ( 
+  <form onSubmit={handlefilter} className='absolute z-10 flex flex-col top-16 right-0 border-2 rounded-md shadow-lg space-y-4 w-48 bg-white gap-2'>
+    <label className='flex flex-col text-sm m-2'>
+      Subject:
+      <input 
+        type="text" 
+        placeholder="Enter subject"
+        value={subject} 
+        onChange={(e) => setSubject(e.target.value)}
+        className="input input-bordered"
+      />
     </label>
-    <label className='flex items-center gap-2 text-sm m-2'> <input type="checkbox"  />Date</label>
     <button type="submit" className="btn btn-sm btn-primary w-full mt-2">Submit</button>
-    </form>
-    )  
-  }
+  </form>
+)}
+
 
 </div>
         <table className='table table-zebra w-full'>

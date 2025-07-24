@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from "firebase/firestore";
 import {  Children, createContext, useContext, useDebugValue, useEffect, useState } from "react";
 import { db } from "../firebase";
 import { FiFilter } from "react-icons/fi";
@@ -25,22 +25,25 @@ export const ExpenseProvider=({children})=>{
 
 
     
-const filterExpensesBySubject = async (subjectValue) => {
-    try {
-      const q = query(collection(db, 'expense'), where('subject', '==', subjectValue));
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const filteredData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        console.log("🔥 Filtered by subject:", filteredData);
-        setExpenses(filteredData);
-      });
-      return () => unsubscribe(); // Optional: return to clean later
-    } catch (error) {
-      console.error("❌ Error filtering by subject:", error.message);
-    }
-  };
+
+const filterExpensesBySubject = async (subject) => {
+        console.log("Querying for subject:", subject);
+  try {
+    const q = query(collection(db, "expense"), where("subject", "==", subject));
+    const snapshot = await getDocs(q);
+
+    const filtered = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+console.log(filtered);
+
+    return filtered; // ✅ Make sure you return this
+  } catch (error) {
+    console.error("❌ Error fetching filtered expenses:", error.message);
+    return []; // Return empty array if error
+  }
+};
 
 const updateExpense = async (id, updatedData) => {
   try {
@@ -67,17 +70,7 @@ const deleteExpense=async(id)=>{
         
     }
 }
-//    useEffect(()=>{
-//     const unsubscribe=onSnapshot(collection(db,'getexpense'),(snapshot)=>{
-//         const expense=snapshot.docs.map(doc=>({
-//           id:doc.id,
-//           ...doc.data(),
-//         }))
 
-//         setGetExpense(expense)
-//     })
-//   return ()=>  unsubscribe()
-//    },[])
       
     
 
