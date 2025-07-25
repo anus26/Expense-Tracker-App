@@ -34,7 +34,7 @@ const Navabar = () => {
 <div className={`flex  items-center gap-3 p-3   rounded-md transition-all duration-300 ${onclick ? 'border':'hover:bg-slate-400'}`}>
   <MdHome className='w-6 h-6 text-white'   />
   <Link
-    to='/Dashboard'
+    to='/'
     className='font-semibold text-xl text-white hover:text-black transition-colors duration-300'
   >
     Dashboard
@@ -49,7 +49,7 @@ const Navabar = () => {
   </div>
 
     <div className=' p-4 mt-auto'>
-          <button  onClick={handleLogout} className='font-semibold flex items-center justify-center gap-2      text-white   hover:text-white w-full h-10 transition-all duration-300 rounded-md'>
+          <button  onClick={handleLogout} className='font-semibold flex items-center justify-center gap-2      text-white   hover:text-black w-full h-10 transition-all duration-300 rounded-md'>
           <RiLogoutCircleLine className='text-2xl text-white ' />
             Logout
           </button>

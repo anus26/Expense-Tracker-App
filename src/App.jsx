@@ -1,11 +1,16 @@
-import React from 'react'
-import { BrowserRouter ,Routes,Route} from 'react-router-dom'
+import React, { useState } from 'react'
+import { BrowserRouter ,Routes,Route, Navigate} from 'react-router-dom'
 import Login from './pages/Login'
 import Navabar from './Components/Navabar'
 import { Toaster } from 'react-hot-toast'
+import { useAuth } from './Context/AuthContext'
 import Dashboard from './pages/Dashboard'
 
 const App = () => {
+  const [login, setLogin]=useState()
+  const {currentUser}=useAuth()
+  console.log(currentUser);
+  
   return (
 <>
 <BrowserRouter>
@@ -23,11 +28,14 @@ const App = () => {
   <div className='flex-1 '>
 
 <Routes>
-<Route path='/Login'  excat element={<Login/>}/>
-<Route path='/dashboard' excat element={<Dashboard/>}/>
-
-
-
+  <Route
+    path="/"
+    element={currentUser ? <Dashboard /> : <Navigate to="/login" />}
+  />
+  <Route
+    path="/login"
+    element={!currentUser ? <Login /> : <Navigate to="/" />}
+  />
 </Routes>
   </div>
 </div>

@@ -101,8 +101,8 @@ const handleGoogle=async()=>{
             {isRegister ?'Register':'Login'}
            
           </button>
-         <button type='submit' onClick={handleGoogle}>
-          google singin
+         <button type='submit' onClick={handleGoogle} className='bg-white border shadow-xl flex items-center justify-between p-4 w-52 hover:bg-yellow-400 h-14 font-semibold text-center'>
+          <img src="./images/google.png" alt="goolge" className='w-5' />{isRegister ? 'Sigin with Goolge': 'Login with Google'}
 
          </button>
           <p>
@@ -113,6 +113,7 @@ const handleGoogle=async()=>{
             >
    {isRegister ? "Login" : "Register"}
             </span>
+            
           </p>
         </form>
       </div>
