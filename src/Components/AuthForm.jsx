@@ -36,7 +36,7 @@ setError('')
     navigate('/dashboard'); 
   } catch (error) {
     setError(error.message)
-    toast.error('error corrected type')
+   toast.error(error.message || 'Something went wrong');
   }
   
 };
@@ -101,8 +101,9 @@ const handleGoogle=async()=>{
             {isRegister ?'Register':'Login'}
            
           </button>
-         <button type='submit' onClick={handleGoogle} className='bg-white border shadow-xl flex items-center justify-between p-4 w-52 hover:bg-yellow-400 h-14 font-semibold text-center'>
-          <img src="./images/google.png" alt="goolge" className='w-5' />{isRegister ? 'Sigin with Goolge': 'Login with Google'}
+         <button type='button' onClick={handleGoogle} className='bg-white border shadow-xl flex items-center justify-between p-4 w-52 hover:bg-yellow-400 h-14 font-semibold text-center'>
+          <img src="./images/google.png" alt="goolge" className='w-5' />{isRegister ? 'Sign in with Google' : 'Login with Google'}
+
 
          </button>
           <p>
