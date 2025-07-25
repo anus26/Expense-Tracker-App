@@ -118,9 +118,9 @@ setSubject('')
 
 
 </div>
-<div className='overflow-x-auto sm:snap-x sm:snap-mandatory'>
+<div className='overflow-x-auto sm:snap-x sm:snap-mandatory border shadow-xl w-full  sm:w-96 xs:w-60 '>
 
-        <table className='table-auto  border-collapse table-zebra w-full  sm:w-20 xs:w-10 '>
+        <table className='table-auto  border-collapse table-zebra w-full  sm:w-20 xs:w-10  '>
           
           <thead>
             <tr className='bg-gray-200 text-left flex-row-1'>

@@ -23,7 +23,7 @@ const Navabar = () => {
   }
   return (
  <>
- <nav className='      ' >
+ <nav className=' flex flex-col justify-between h-full     ' >
   <div className='flex gap-2 mt-5  '>
 
   <img src="./images/budgeting.png" alt="Tracking"  className='w-16'/>
@@ -41,18 +41,20 @@ const Navabar = () => {
   </Link>
 </div>
 
-<div className={`flex items-center gap-3 p-3   rounded-md transition-all duration-300 ${onclick ? 'border':'hover:bg-slate-400'}`}>
+<div className={`flex items-center gap-3 p-3 sm:  rounded-md transition-all duration-300 ${onclick ? 'border':'hover:bg-slate-400'}`}>
 <RiLoginCircleLine  className='w-6 h-6 text-whtie'/>
-<Link to='/Login'  className='font-semibold text-xl hover:text-black transition-all duration-300'>Login</Link>
+<Link to='/Login'  className='font-semibold text-xl hover:text-black transition-all duration-300 '>Login</Link>
 
 </div>
   </div>
-    <div className='flex  items-end justify-end gap-2 p-4 '>
-          <button  onClick={handleLogout} className='font-semibold flex items-end justify-end  bottom-10 left-0 absolute  hover:text-white w-32 h-10 transition-all duration-300 rounded-md'>
+
+    <div className=' p-4 mt-auto'>
+          <button  onClick={handleLogout} className='font-semibold flex items-center justify-center gap-2      text-white   hover:text-white w-full h-10 transition-all duration-300 rounded-md'>
           <RiLogoutCircleLine className='text-2xl text-white ' />
             Logout
           </button>
         </div>
+
  </nav>
  </>
   )
